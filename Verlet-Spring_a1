@@ -6,7 +6,7 @@ m = 1.0          # mass (kg)
 k = 1.0          # spring constant (N/m)
 omega = np.sqrt(k/m)
 dt = 0.1        # time step (s)
-steps = 1000     # number of steps
+steps = 100     # number of steps
 
 # Initial conditions
 x0 = 0        # initial displacement (m)
@@ -41,3 +41,5 @@ plt.ylabel("Value")
 plt.legend()
 plt.grid(True)
 plt.show()
+
+#stability of this integration is lost above dt=2
