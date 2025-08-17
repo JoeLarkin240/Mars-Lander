@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 m = 1.0          # mass (kg)
 k = 1.0          # spring constant (N/m)
 omega = np.sqrt(k/m)
-dt = 0.01        # time step (s)
+dt = 0.1        # time step (s)
 steps = 1000     # number of steps
 
 # Initial conditions
-x0 = 1.0         # initial displacement (m)
-v0 = 0.0         # initial velocity (m/s)
+x0 = 0        # initial displacement (m)
+v0 = 1         # initial velocity (m/s)
 
 # Arrays to store results
 x = np.zeros(steps)

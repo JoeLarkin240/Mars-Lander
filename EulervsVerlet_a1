@@ -1,0 +1,56 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+m = 1.0          # mass (kg)
+k = 1.0          # spring constant (N/m)
+dt = 0.01        # time step (s)
+steps = 10000     # number of steps
+
+# Initial conditions
+x0 = 0         # initial displacement (m)
+v0 = 1.0         # initial velocity (m/s)
+t = np.linspace(0, steps*dt, steps)
+
+# -----------------------------
+# Euler integration
+# -----------------------------
+x_euler = np.zeros(steps)
+v_euler = np.zeros(steps)
+x_euler[0] = x0
+v_euler[0] = v0
+
+for n in range(steps-1):
+    a_n = -(k/m) * x_euler[n]
+    v_euler[n+1] = v_euler[n] + a_n * dt
+    x_euler[n+1] = x_euler[n] + v_euler[n] * dt
+
+# -----------------------------
+# Verlet integration
+# -----------------------------
+x_verlet = np.zeros(steps)
+v_verlet = np.zeros(steps)
+x_verlet[0] = x0
+a0 = -(k/m)*x0
+# First step with Euler half-step
+x_verlet[1] = x0 + v0*dt + 0.5*a0*dt**2
+
+for n in range(1, steps-1):
+    a_n = -(k/m)*x_verlet[n]
+    x_verlet[n+1] = 2*x_verlet[n] - x_verlet[n-1] + a_n*dt**2
+
+# Approximate velocity with central difference
+v_verlet[1:-1] = (x_verlet[2:] - x_verlet[:-2])/(2*dt)
+
+# -----------------------------
+# Plot results
+# -----------------------------
+plt.figure(figsize=(10,6))
+plt.plot(t, x_euler, label="Euler (Displacement)", alpha=0.7)
+plt.plot(t, x_verlet, label="Verlet (Displacement)", alpha=0.7)
+plt.title("Mass-Spring System: Euler vs Verlet Integration")
+plt.xlabel("Time (s)")
+plt.ylabel("Displacement")
+plt.legend()
+plt.grid(True)
+plt.show()
