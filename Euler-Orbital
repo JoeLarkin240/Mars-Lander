@@ -1,0 +1,41 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+G = 6.67430e-11        # gravitational constant
+M = 6.42e23            # mass of Mars (kg)
+m = 1000.0             # mass of the moving body (arbitrary satellite)
+
+# Time setup
+dt = 1.0               # time step (s)
+steps = 20000
+
+# Initial conditions
+position = np.array([4.0e6, 0.0, 0.0])   # initial position (m)
+velocity = np.array([0.0, 3500.0, 0.0])  # initial velocity (m/s)
+
+# Arrays to store trajectory
+trajectory = np.zeros((steps, 3))
+
+for i in range(steps):
+    trajectory[i] = position
+    
+    # Compute acceleration due to gravity
+    r = np.linalg.norm(position)
+    acc = -G * M / r**3 * position   # vector form
+    
+    # Euler update
+    velocity = velocity + acc * dt
+    position = position + velocity * dt
+
+# Plot trajectory
+plt.figure(figsize=(6,6))
+plt.plot(trajectory[:,0], trajectory[:,1])
+plt.scatter(0, 0, color="red", label="Mars")  # planet at origin
+plt.title("Euler Integration of Body in Mars' Gravitational Field")
+plt.xlabel("x (m)")
+plt.ylabel("y (m)")
+plt.legend()
+plt.axis("equal")
+plt.grid(True)
+plt.show()

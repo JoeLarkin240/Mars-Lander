@@ -1,0 +1,55 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+G = 6.67430e-11        # gravitational constant
+M = 6.42e23            # mass of Mars (kg)
+m = 1000.0             # satellite mass (kg)
+
+# Time setup
+dt = 1.0               # time step (s)
+steps = 20000
+
+# Initial conditions
+position = np.array([4.0e6, 0.0, 0.0])   # initial position (m)
+velocity = np.array([0.0, 3500.0, 0.0])  # initial velocity (m/s)
+
+# Arrays to store trajectory
+trajectory = np.zeros((steps, 3))
+
+# Function to compute gravitational acceleration
+def acceleration(pos):
+    r = np.linalg.norm(pos)
+    return -G * M / r**3 * pos
+
+# Initial acceleration
+a = acceleration(position)
+
+# Verlet loop
+for i in range(steps):
+    trajectory[i] = position
+    
+    # Update position
+    position_new = position + velocity * dt + 0.5 * a * dt**2
+    
+    # Compute new acceleration
+    a_new = acceleration(position_new)
+    
+    # Update velocity (using average acceleration)
+    velocity = velocity + 0.5 * (a + a_new) * dt
+    
+    # Prepare for next step
+    position = position_new
+    a = a_new
+
+# Plot trajectory
+plt.figure(figsize=(6,6))
+plt.plot(trajectory[:,0], trajectory[:,1])
+plt.scatter(0, 0, color="red", label="Mars")  # Mars at origin
+plt.title("Velocity Verlet Integration: Orbit around Mars")
+plt.xlabel("x (m)")
+plt.ylabel("y (m)")
+plt.legend()
+plt.axis("equal")
+plt.grid(True)
+plt.show()
