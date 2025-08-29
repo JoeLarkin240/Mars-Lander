@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 G = 6.67430e-11        # gravitational constant
 M = 6.42e23            # mass of Mars (kg)
 m = 1000.0             # mass of the moving body (arbitrary satellite)
-
+R_mars = 3.39e6  # meters
 # Time setup
 dt = 1.0               # time step (s)
-steps = 20000
+steps = 100
 
 # Initial conditions
-position = np.array([4.0e6, 0.0, 0.0])   # initial position (m)
-velocity = np.array([0.0, 3500.0, 0.0])  # initial velocity (m/s)
+position = np.array([0, R_mars + 5e4, 0.0])   # initial position (m)
+velocity = np.array([0.0, 0.0, 0.0])  # initial velocity (m/s)
 
 # Arrays to store trajectory
 trajectory = np.zeros((steps, 3))
@@ -29,13 +29,32 @@ for i in range(steps):
     position = position + velocity * dt
 
 # Plot trajectory
-plt.figure(figsize=(6,6))
-plt.plot(trajectory[:,0], trajectory[:,1])
-plt.scatter(0, 0, color="red", label="Mars")  # planet at origin
-plt.title("Euler Integration of Body in Mars' Gravitational Field")
-plt.xlabel("x (m)")
-plt.ylabel("y (m)")
+# plt.figure(figsize=(6,6))
+# plt.plot(trajectory[:,0], trajectory[:,1])
+# plt.scatter(0, 0, color="red", label="Mars")  # planet at origin
+# plt.title("Euler Integration of Body in Mars' Gravitational Field")
+# plt.xlabel("x (m)")
+# plt.ylabel("y (m)")
+# plt.legend()
+# plt.axis("equal")
+# plt.grid(True)
+# plt.show()
+
+#Plot altitude
+
+# Time array
+time = np.arange(steps) * dt
+
+# Compute altitude above Mars' surface
+altitude = np.linalg.norm(trajectory, axis=1) - R_mars
+
+# Plot altitude vs time
+plt.figure(figsize=(8, 5))
+plt.plot(time, altitude, color="blue", label="Altitude")
+plt.axhline(0, color="red", linestyle="--", label="Mars Surface")
+plt.title("Altitude vs Time (Euler Integration)")
+plt.xlabel("Time (s)")
+plt.ylabel("Altitude above Mars surface (m)")
 plt.legend()
-plt.axis("equal")
 plt.grid(True)
 plt.show()

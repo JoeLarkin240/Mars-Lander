@@ -1,0 +1,22 @@
+# Constants used (for reference)
+# G = 6.67430e-11
+# M = 6.42e23
+# r0 = 4.0e6
+
+# ------------------------
+# 1) Circular orbit
+# ------------------------
+position = np.array([4.0e6, 0.0, 0.0])                 # initial position (m)
+velocity = np.array([0.0, 3272.96, 0.0])              # initial velocity (m/s) ≈ 3.273 km/s
+
+# ------------------------
+# 2) Elliptical orbit (e = 0.5), starting at periapsis
+# ------------------------
+position = np.array([4.0e6, 0.0, 0.0])                 # start at periapsis (m)
+velocity = np.array([0.0, 4008.22, 0.0])              # tangential speed at periapsis (m/s) ≈ 4.008 km/s
+
+# ------------------------
+# 3) Hyperbolic escape (10% above local escape speed)
+# ------------------------
+position = np.array([4.0e6, 0.0, 0.0])                 # initial position (m)
+velocity = np.array([0.0, 5093.44, 0.0])              # initial velocity (m/s) ≈ 5.093 km/s

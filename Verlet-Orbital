@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 G = 6.67430e-11        # gravitational constant
 M = 6.42e23            # mass of Mars (kg)
 m = 1000.0             # satellite mass (kg)
-
+R_mars = 3.39e6
 # Time setup
 dt = 1.0               # time step (s)
 steps = 20000
@@ -43,13 +43,36 @@ for i in range(steps):
     a = a_new
 
 # Plot trajectory
-plt.figure(figsize=(6,6))
-plt.plot(trajectory[:,0], trajectory[:,1])
-plt.scatter(0, 0, color="red", label="Mars")  # Mars at origin
-plt.title("Velocity Verlet Integration: Orbit around Mars")
-plt.xlabel("x (m)")
-plt.ylabel("y (m)")
+#plt.figure(figsize=(6,6)
+#plt.plot(trajectory[:,0], trajectory[:,1])
+#plt.scatter(0, 0, color="red", label="Mars")  # Mars at origin
+#plt.title("Velocity Verlet Integration: Orbit around Mars")
+#plt.xlabel("x (m)")
+#plt.ylabel("y (m)")
+#plt.legend()
+#plt.axis("equal")
+#plt.grid(True)
+#plt.show()
+
+# Plot altitude
+time = np.arange(steps) * dt
+
+# Compute altitude above Mars surface
+altitude = np.linalg.norm(trajectory, axis=1) - R_mars
+
+# Stop plotting once the body reaches the surface
+impact_index = np.argmax(altitude < 0)
+if impact_index > 0:
+    time = time[:impact_index]
+    altitude = altitude[:impact_index]
+
+# Plot altitude vs time
+plt.figure(figsize=(8, 5))
+plt.plot(time, altitude, color="green", label="Altitude (Verlet)")
+plt.axhline(0, color="red", linestyle="--", label="Mars Surface")
+plt.title("Altitude vs Time (Verlet Integration)")
+plt.xlabel("Time (s)")
+plt.ylabel("Altitude above Mars surface (m)")
 plt.legend()
-plt.axis("equal")
 plt.grid(True)
 plt.show()
